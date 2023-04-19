@@ -19,6 +19,7 @@ class BitcoinExchange
 		static string _input;
 		static string _data;
 		static map<string, double> _date_price;
+		static map<string, double> _date_amount;
 
 		BitcoinExchange();
 		BitcoinExchange(BitcoinExchange const &other);
@@ -27,10 +28,13 @@ class BitcoinExchange
 	public:
 		~BitcoinExchange();
 
-		static std::pair<string, double> parse_line(string &file);
+		static std::pair<string, double> parse_line(string &file, char delim);
+		static void parse_input_line(string &file, char delim, int i);
 		
 		static void print_db();
 		static void load_db();
+
+		static void calculate_valuations(string &input_path);
 
 		static void print_values(string &file);
 };

@@ -13,11 +13,11 @@ $(NAME) : $(SRC) $(HEADS) Makefile
 
 run :
 	$(MAKE) all
-	./$(NAME) "main.cpp"
+	./$(NAME) "input.csv"
 
 test : 
 	$(MAKE) all
-	./$(NAME) "input.txt"
+	./$(NAME) "input.csv"
 	./$(NAME) "lala"
 
 add :
