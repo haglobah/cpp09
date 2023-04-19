@@ -139,12 +139,12 @@ std::pair<string, double> BitcoinExchange::parse_line(string &line, char delim)
 		throw lineInWrongFormat();
 	}
 	string date = fields.front();
-	string value = fields.back();
+	string price = fields.back();
 
 	if (!date_valid(date))				throw invalidDate();
-	if (!is_only(value, ".0123456789"))	throw invalidNumber();
+	if (!is_only(price, ".0123456789"))	throw invalidNumber();
 
-	double	val = s_to_d(value);
+	double	val = s_to_d(price);
 	std::pair<string, double> ret(date, val);
 	return (ret);
 }
@@ -195,22 +195,21 @@ void BitcoinExchange::parse_input_line(string &line, char delim, int i)
 	if (fields.size() != 2) return (printerr("Line is invalid: " + line));
 
 	string date = fields.front();
-	fields.pop_front();
-	string value = fields.front();
+	string amount = fields.back();
 
 	if (!date_valid(date)) return (printerr("Date is invalid: " + date));
-	if (!is_only(value, ".0123456789"))	return (printerr("Number is invalid: " + value));
+	if (!is_only(amount, "-.0123456789"))	return (printerr("Number is invalid: " + amount));
 
-	if (!(value.find(".") != std::string::npos))
+	if (!(amount.find(".") != std::string::npos))
 	{
-		int	val = s_to_i(value);
+		int	val = s_to_i(amount);
 		if (val < 0 || val > 1000)
-			return (printerr("Value not in the specified range [0, 1000]: " + value));
+			return (printerr("Amount not in the specified range [0, 1000]: " + amount));
 	}
-	double	val = s_to_d(value);
+	double	val = s_to_d(amount);
 
 	
-	cout << i << ": " << date << " | " << value << "" << endl;
+	cout << i << ": " << date << " | " << amount << "" << endl;
 }
 
 void BitcoinExchange::calculate_valuations(string &input_path)
