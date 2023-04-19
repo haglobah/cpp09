@@ -73,3 +73,9 @@ class invalidDate : public std::exception {
 		return ("Error: A date is invalid");
 	}
 };
+
+class invalidNumber : public std::exception {
+	const char *what() const throw() {
+		return ("Error: A number is invalid");
+	}
+};

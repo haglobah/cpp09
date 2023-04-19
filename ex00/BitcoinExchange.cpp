@@ -23,11 +23,40 @@ BitcoinExchange::~BitcoinExchange()
 }
 
 // HELPERS
-void clear_ws(string &u)
+bool contains(string &haystack, string const &needles)
 {
-	u_int64_t pos;
-	while ((pos = u.find(" ")) != std::string::npos )
-		u.erase(pos);
+	for (u_int32_t i = 0; i < needles.length(); i++)
+	{
+		if (haystack.find(needles[i]) != string::npos)
+			return (true);
+	}
+	return (false);
+}
+
+bool	is_only(string s, string chars)
+{
+	for (u_int32_t i = 0; i < s.length(); i++)
+	{
+		if (chars.find(s[i]) == string::npos)
+			return (false);
+	}
+	return (true);
+}
+
+string	trim(string &s)
+{
+	size_t 	front_pos;
+	size_t 	back_pos;
+
+	if (s.empty())
+		return ("");
+	front_pos = s.find_first_not_of(" ");
+	if (front_pos == string::npos)
+		return (s);
+	back_pos = s.find_last_not_of(" ");
+	if (front_pos != back_pos)
+		s = s.substr(front_pos, back_pos + 1);
+	return (s);
 }
 
 list<string>	split(string str, char delim)
@@ -38,8 +67,7 @@ list<string>	split(string str, char delim)
 	std::istringstream sstream(str);
     while (getline(sstream, u, delim))
 	{
-		clear_ws(u);
-		strList.push_back(u);
+		strList.push_back(trim(u));
 	}
 	return (strList);
 }
@@ -84,6 +112,8 @@ bool validate_date(int year, int month, int day) {
 
 bool	date_valid(string date)
 {
+	if (!is_only(date, "-0123456789"))	return (false);
+
 	list<string> yyyymmdd = split(date, '-');
 
 	if (yyyymmdd.size() != 3)
@@ -111,7 +141,8 @@ std::pair<string, double> BitcoinExchange::parse_line(string &line, char delim)
 	string date = fields.front();
 	string value = fields.back();
 
-	if (!date_valid(date))		throw invalidDate();
+	if (!date_valid(date))				throw invalidDate();
+	if (!is_only(value, ".0123456789"))	throw invalidNumber();
 
 	double	val = s_to_d(value);
 	std::pair<string, double> ret(date, val);
@@ -147,6 +178,16 @@ void BitcoinExchange::print_db()
 	cout << "]" << endl;
 }
 
+void printlist(list<string> l)
+{
+	cout << "[ ";
+	for (list<string>::iterator it = l.begin(); it != l.end(); it++)
+	{
+		cout << *it << " "; 
+	}
+	cout << "]" << endl;
+}
+
 void BitcoinExchange::parse_input_line(string &line, char delim, int i)
 {
 	list<string> fields = split(line, delim);
@@ -154,14 +195,22 @@ void BitcoinExchange::parse_input_line(string &line, char delim, int i)
 	if (fields.size() != 2) return (printerr("Line is invalid: " + line));
 
 	string date = fields.front();
-	string value = fields.back();
+	fields.pop_front();
+	string value = fields.front();
 
 	if (!date_valid(date)) return (printerr("Date is invalid: " + date));
+	if (!is_only(value, ".0123456789"))	return (printerr("Number is invalid: " + value));
 
+	if (!(value.find(".") != std::string::npos))
+	{
+		int	val = s_to_i(value);
+		if (val < 0 || val > 1000)
+			return (printerr("Value not in the specified range [0, 1000]: " + value));
+	}
 	double	val = s_to_d(value);
-	std::pair<string, double> ret(date, val);
 
-	cout << i << ": " << line << "" << endl;
+	
+	cout << i << ": " << date << " | " << value << "" << endl;
 }
 
 void BitcoinExchange::calculate_valuations(string &input_path)
