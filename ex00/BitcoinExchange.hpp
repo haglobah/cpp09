@@ -35,6 +35,7 @@ class BitcoinExchange
 		static void load_db();
 
 		static void calculate_valuations(string &input_path);
+		static std::pair<string, double> find_date(string &date);
 
 		static void print_values(string &file);
 };

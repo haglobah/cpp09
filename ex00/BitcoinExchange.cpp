@@ -92,7 +92,13 @@ double 	s_to_d(string s)
 
 void printerr(string msg)
 {
-	cerr << "Error: " << msg << endl;
+	cerr << "Error: " << msg << endl << endl;
+}
+
+void printquery(int i, string &date, string &amount, double quantity, std::pair<string, double> nearest)
+{
+	cout << "Query " << std::setw(2) << i << ": " << date << " | " << amount << "\n        > "
+		<< nearest.first << " | " << nearest.second << " => " << quantity * nearest.second << endl << endl;
 }
 
 bool validate_date(int year, int month, int day) {
@@ -188,6 +194,17 @@ void printlist(list<string> l)
 	cout << "]" << endl;
 }
 
+std::pair<string, double> BitcoinExchange::find_date(string &date)
+{
+	map<string, double>::iterator it = _date_price.begin();
+	for (; it != _date_price.end(); it++)
+	{
+		if (it->first > date)
+			return ((it == _date_price.begin()) ? *it : *--it);
+	}
+	return (*it);
+}
+
 void BitcoinExchange::parse_input_line(string &line, char delim, int i)
 {
 	list<string> fields = split(line, delim);
@@ -206,10 +223,9 @@ void BitcoinExchange::parse_input_line(string &line, char delim, int i)
 		if (val < 0 || val > 1000)
 			return (printerr("Amount not in the specified range [0, 1000]: " + amount));
 	}
-	double	val = s_to_d(amount);
-
-	
-	cout << i << ": " << date << " | " << amount << "" << endl;
+	double	quantity = s_to_d(amount);
+	std::pair<string, double> nearest = find_date(date);
+	printquery(i, date, amount, quantity, nearest);
 }
 
 void BitcoinExchange::calculate_valuations(string &input_path)
