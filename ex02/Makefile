@@ -13,7 +13,11 @@ $(NAME) : $(SRC) $(HEADS) Makefile
 
 run :
 	$(MAKE) all
-	./$(NAME)
+	./$(NAME) "1"
+
+test :
+	$(MAKE) all
+	./$(NAME) 1 2 3 2 9 2 7
 
 add :
 	git add $(SRC) $(HEADS) Makefile
