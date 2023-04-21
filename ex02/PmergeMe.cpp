@@ -93,21 +93,81 @@ void PmergeMe::compare()
 	print_seq("Before: ", _vec);
 
 	time("Sorting std::set: ", &sort_set, _rset);
-	// time("Sorting std::vec: ", &sort_vec, _rvec);
+	time("Sorting std::vec: ", &sort_vec, _rvec);
 }
 
+void pair_insert(vector<pair<int64_t, int64_t> > &pairs, pair<int64_t, int64_t> &p)
+{
+	for (vector<pair<int64_t, int64_t> >::iterator it = pairs.begin(); it != pairs.end(); ++it)
+	{
+		if (it->first > p.first)
+		{
+			pairs.insert(it, p);
+			return ;
+		}
+	}
+	pairs.push_back(p);
+}
 
-// vector<pair<int64_t, int64_t> > PmergeMe::make_pairsv()
-// {
+vector<pair<int64_t, int64_t> > &PmergeMe::make_pairsv(vector<pair<int64_t, int64_t> > &pairs)
+{
+	int64_t a;
+	pair<int64_t, int64_t> p;
 
-// }
+	for (vector<int64_t>::iterator it = _vec.begin(); it != _vec.end(); ++it)
+	{
+		a = *it++;
+		if (it == _vec.end())
+		{
+			_rvec.push_back(a);
+			break;
+		}
+		int64_t b = *it;
+		p = (a < b) ? pair<int64_t, int64_t>(a, b) : pair<int64_t, int64_t>(b, a);
+		pair_insert(pairs, p);
+	}
+	return (pairs);
+}
 
-// void PmergeMe::sort_vec()
-// {
-// 	vector<std::pair<int64_t, int64_t> > pairs = make_pairs();
-// 	sort_pairs(pairs);
-// 	binary_insertion(pairs);
-// }
+void PmergeMe::binary_insert(int64_t num)
+{
+	for (vector<int64_t>::iterator it = _rvec.begin(); it != _rvec.end(); ++it)
+	{
+		if (*it > num)
+		{
+			_rvec.insert(it, num);
+			return ;
+		}
+	}
+	_rvec.push_back(num);
+}
+
+void PmergeMe::binary_insertion(vector<pair<int64_t, int64_t> > pairs)
+{
+	int64_t last = _rvec.back();
+	_rvec.pop_back();
+	for (vector<pair<int64_t, int64_t> >::iterator it = pairs.begin(); it != pairs.end(); ++it)
+	{
+		_rvec.push_back(it->first);
+	}
+	for (vector<pair<int64_t, int64_t> >::iterator it = pairs.begin(); it != pairs.end(); ++it)
+	{
+		// print_pair(*it);
+		binary_insert(it->second);
+		// print_seq("_rvec: ", _rvec);
+	}
+	binary_insert(last);
+}
+
+vector<int64_t> PmergeMe::sort_vec()
+{
+	vector<std::pair<int64_t, int64_t> > pairs;
+	pairs = make_pairsv(pairs);
+	// print_pairs("Pairs: ", pairs);
+	// cout << endl;
+	binary_insertion(pairs);
+	return (_rvec);
+}
 
 
 

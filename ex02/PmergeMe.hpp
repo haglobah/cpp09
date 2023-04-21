@@ -36,20 +36,24 @@ class PmergeMe
 		~PmergeMe();
 
 		static void parse(int ac, char **av);
-		template <typename T> static void print_seq(string msg, T &cont);
 		template <typename T> static void time(string msg, T (*sort)(void), T &sorted);
 
+
 		static set<int64_t> sort_set();
-		static vector<int64_t> sort_vec();
-
-		static void compare();
-
 		static set<pair<int64_t, int64_t> > make_pairss();
-		static vector<pair<int64_t, int64_t> > make_pairsv();
+
+		static void binary_insert(int64_t num);
+		static void binary_insertion(vector<pair<int64_t, int64_t> > pairs);
+		static vector<pair<int64_t, int64_t> > &make_pairsv(vector<pair<int64_t, int64_t> > &);
+		static vector<int64_t> sort_vec();
+		
+		static void compare();
 };
 
+template <typename T> void print_pair(T &pair);
+
 template <typename T>
-void PmergeMe::print_seq(string msg, T &cont)
+void print_seq(string msg, T &cont)
 {
 	cout << msg << "[ ";
 	for (typename T::iterator it = cont.begin(); it != cont.end(); it++)
@@ -57,6 +61,23 @@ void PmergeMe::print_seq(string msg, T &cont)
 		cout << *it << " ";
 	}
 	cout << "]" << endl;
+}
+
+template <typename T>
+void print_pair(T &pair)
+{
+	cout << "[ " << pair.first << ", " << pair.second << " ] ";
+}
+
+template <typename T>
+void print_pairs(string msg, T &cont)
+{
+	cout << msg << "( ";
+	for (typename T::iterator it = cont.begin(); it != cont.end(); it++)
+	{
+		print_pair(*it);
+	}
+	cout << ")" << endl;
 }
 
 
