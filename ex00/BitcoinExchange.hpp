@@ -19,7 +19,6 @@ class BitcoinExchange
 		static string _input;
 		static string _data;
 		static map<string, double> _date_price;
-		static map<string, double> _date_amount;
 
 		BitcoinExchange();
 		BitcoinExchange(BitcoinExchange const &other);

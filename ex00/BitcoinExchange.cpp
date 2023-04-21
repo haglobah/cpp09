@@ -11,7 +11,6 @@ using std::list;
 string BitcoinExchange::_input;
 string BitcoinExchange::_data;
 map<string, double> BitcoinExchange::_date_price;
-map<string, double> BitcoinExchange::_date_amount;
 
 namespace {
 	string const data_path = "data.csv";
