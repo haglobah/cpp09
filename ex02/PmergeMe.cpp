@@ -131,15 +131,18 @@ vector<pair<int64_t, int64_t> > &PmergeMe::make_pairsv(vector<pair<int64_t, int6
 
 void PmergeMe::binary_insert(int64_t num)
 {
-	for (vector<int64_t>::iterator it = _rvec.begin(); it != _rvec.end(); ++it)
+	int low = 0;
+	int high = _rvec.size() - 1;
+	while (low <= high)
 	{
-		if (*it > num)
-		{
-			_rvec.insert(it, num);
-			return ;
-		}
+		int mid = (low + high) / 2;
+		if (_rvec[mid] >= num)
+			high = mid - 1;
+		else
+			low = mid + 1;
 	}
-	_rvec.push_back(num);
+	vector<int64_t>::iterator place = _rvec.begin() + low;
+	_rvec.insert(place, num);
 }
 
 void PmergeMe::binary_insertion(vector<pair<int64_t, int64_t> > pairs)
