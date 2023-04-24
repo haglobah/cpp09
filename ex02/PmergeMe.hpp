@@ -3,6 +3,8 @@
 #include <iostream>
 #include <sstream>
 #include <time.h>
+#include <stdint.h>
+#include <climits>
 
 #include <vector>
 #include <set>

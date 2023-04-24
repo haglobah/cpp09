@@ -24,7 +24,7 @@ BitcoinExchange::~BitcoinExchange()
 // HELPERS
 bool contains(string &haystack, string const &needles)
 {
-	for (u_int32_t i = 0; i < needles.length(); i++)
+	for (uint32_t i = 0; i < needles.length(); i++)
 	{
 		if (haystack.find(needles[i]) != string::npos)
 			return (true);
@@ -34,7 +34,7 @@ bool contains(string &haystack, string const &needles)
 
 bool	is_only(string s, string chars)
 {
-	for (u_int32_t i = 0; i < s.length(); i++)
+	for (uint32_t i = 0; i < s.length(); i++)
 	{
 		if (chars.find(s[i]) == string::npos)
 			return (false);

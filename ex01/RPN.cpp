@@ -26,7 +26,7 @@ std::string trim(const std::string &s)
 
 bool	is_only(string s, string chars)
 {
-	for (u_int32_t i = 0; i < s.length(); i++)
+	for (uint32_t i = 0; i < s.length(); i++)
 	{
 		if (chars.find(s[i]) == string::npos)
 			return (false);

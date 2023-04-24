@@ -32,7 +32,7 @@ std::string trim(const std::string &s)
 
 bool	is_only(string s, string chars)
 {
-	for (u_int32_t i = 0; i < s.length(); i++)
+	for (uint32_t i = 0; i < s.length(); i++)
 	{
 		if (chars.find(s[i]) == string::npos)
 			return (false);
@@ -68,7 +68,7 @@ void PmergeMe::parse(int ac, char **av)
 	}
 }
 
-void print_time(u_int64_t start, u_int64_t end, string msg = "")
+void print_time(uint64_t start, uint64_t end, string msg = "")
 {
 	double duration = double(end - start) / CLOCKS_PER_SEC;
 
