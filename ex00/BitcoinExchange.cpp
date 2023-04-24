@@ -156,7 +156,7 @@ std::pair<string, double> BitcoinExchange::parse_line(string &line, char delim)
 
 void BitcoinExchange::load_db()
 {
-	std::ifstream data_csv(data_path);
+	std::ifstream data_csv(data_path.c_str());
 	
 	if (!data_csv.good())		throw couldNotOpen();
 	if (data_csv.eof())			throw fileIsEmpty();
@@ -229,7 +229,7 @@ void BitcoinExchange::parse_input_line(string &line, char delim, int i)
 
 void BitcoinExchange::calculate_valuations(string &input_path)
 {
-	std::ifstream input_txt(input_path);
+	std::ifstream input_txt(input_path.c_str());
 	
 	if (!input_txt.good())		throw couldNotOpen();
 	if (input_txt.eof())		throw fileIsEmpty();

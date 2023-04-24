@@ -3,7 +3,10 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <sstream>
+#include <stdint.h>
+#include <climits>
 
 #include <map>
 #include <list>
