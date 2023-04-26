@@ -55,11 +55,18 @@ class PmergeMe
 template <typename T> void print_pair(T &pair);
 
 template <typename T>
-void print_seq(string msg, T &cont)
+void print_seq(string msg, T &cont, int printouts = 6)
 {
+	int i = 0;
+
 	cout << msg << "[ ";
-	for (typename T::iterator it = cont.begin(); it != cont.end(); it++)
+	for (typename T::iterator it = cont.begin(); it != cont.end(); it++, i++)
 	{
+		if (i >= printouts)
+		{
+			cout << "... ";
+			break;
+		}
 		cout << *it << " ";
 	}
 	cout << "]" << endl;

@@ -92,7 +92,7 @@ void PmergeMe::compare()
 {
 	print_seq("Before: ", _vec);
 
-	time("Sorting std::set: ", &sort_set, _rset);
+	// time("Sorting std::set: ", &sort_set, _rset);
 	time("Sorting std::vec: ", &sort_vec, _rvec);
 }
 
@@ -147,8 +147,13 @@ void PmergeMe::binary_insert(int64_t num)
 
 void PmergeMe::binary_insertion(vector<pair<int64_t, int64_t> > pairs)
 {
-	int64_t last = _rvec.back();
-	_rvec.pop_back();
+	int64_t last = -1;
+
+	if (_rvec.size() == 1)
+	{
+		last = _rvec.back();
+		_rvec.pop_back();
+	}
 	for (vector<pair<int64_t, int64_t> >::iterator it = pairs.begin(); it != pairs.end(); ++it)
 	{
 		_rvec.push_back(it->first);
@@ -159,7 +164,8 @@ void PmergeMe::binary_insertion(vector<pair<int64_t, int64_t> > pairs)
 		binary_insert(it->second);
 		// print_seq("_rvec: ", _rvec);
 	}
-	binary_insert(last);
+	if (last != -1)
+		binary_insert(last);
 }
 
 vector<int64_t> PmergeMe::sort_vec()
