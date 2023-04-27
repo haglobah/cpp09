@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <time.h>
+#include <sys/time.h>
 #include <stdint.h>
 #include <climits>
 
@@ -18,6 +19,8 @@ using std::pair;
 
 class PmergeMe;
 
+typedef struct timeval	t_tv;
+typedef long long		t_time;
 typedef void (PmergeMe::*function_p)(void);
 
 class PmergeMe 
@@ -69,7 +72,7 @@ void print_seq(string msg, T &cont, int printouts = 6)
 		}
 		cout << *it << " ";
 	}
-	cout << "]" << endl;
+	cout << "] ";
 }
 
 template <typename T>

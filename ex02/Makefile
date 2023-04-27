@@ -22,6 +22,7 @@ test :
 	./$(NAME) `jot -r 10 1 1000 | tr '\n' ' '`
 	./$(NAME) `jot -r 300 1 100000 | tr '\n' ' '`
 	./$(NAME) `jot -r 3000 1 100000 | tr '\n' ' '`
+	./$(NAME) `jot -r 9000 1 100000 | tr '\n' ' '`
 
 add :
 	git add $(SRC) $(HEADS) Makefile

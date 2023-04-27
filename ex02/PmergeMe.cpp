@@ -68,32 +68,49 @@ void PmergeMe::parse(int ac, char **av)
 	}
 }
 
-void print_time(uint64_t start, uint64_t end, string msg = "")
+t_time	utc(t_tv time)
 {
-	double duration = double(end - start) / CLOCKS_PER_SEC;
+	return (time.tv_sec * 1e6 + time.tv_usec);
+}
+
+t_time	get_timestamp(void)
+{
+	t_tv	now;
+
+	gettimeofday(&now, NULL);
+	return (utc(now));
+}
+
+void print_time(int64_t start, int64_t end, string msg = "")
+{
+	double duration = double(end - start);
 
 	cout << msg <<
 		((duration > 10000) ? duration / 1000 : duration) <<
-		((duration > 10000) ? "ms" : "µs") << endl;
+		((duration > 10000) ? "ms" : "µs") <<
+		endl;
 }
 
 template <typename T>
 void PmergeMe::time(string msg, T (*sort)(void), T &sorted)
 {
-	clock_t start = clock();
+	t_time start = get_timestamp();
 	sorted = sort();
-	clock_t end = clock();
+	t_time end = get_timestamp();
 
 	print_seq(msg, sorted);
-	print_time(start, end);
+	print_time(start, end, "=> ");
 }
 
 void PmergeMe::compare()
 {
+	cout << endl;
 	print_seq("Before: ", _vec);
 
-	// time("Sorting std::set: ", &sort_set, _rset);
+	cout << endl;
+	time("Sorting std::set: ", &sort_set, _rset);
 	time("Sorting std::vec: ", &sort_vec, _rvec);
+	cout << endl;
 }
 
 void pair_insert(vector<pair<int64_t, int64_t> > &pairs, pair<int64_t, int64_t> &p)
